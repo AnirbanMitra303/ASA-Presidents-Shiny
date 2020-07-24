@@ -1,0 +1,150 @@
+.shiny-output-error {visibility: hidden;}
+
+.shiny-output-error:before {visibility: hidden;}
+
+.modal-dialog{ width:800px}
+
+.modal-body{ min-height:600px}
+
+/* ------ SPEECH PAGE  -------*/
+.entity_style {
+  border: 0 solid white !important;
+  color: white !important;
+}
+
+/* ------ WELCOME  PAGE  -------*/
+.president_image{
+  border-radius:7px;
+  width:110%;
+  max-width:170px;
+}
+
+.wordcloud_image{
+  width:100%;
+}
+
+.quotation{
+  font-size: 23px;
+  margin: 0 auto;
+  quotes: "\201C""\201D""\2018""\2019";
+  padding: 10px 20px;
+  line-height: 1.4;
+}
+
+.quotation:before {
+  content: open-quote;
+  display: inline;
+  line-height: 0;
+  left: -10px;
+  position: relative;
+  top: 30px;
+  color: #ccc;
+  font-size: 3em;
+}
+
+.quotation::after {
+  content: close-quote;
+  display: inline;
+  line-height: 0;
+  left: 10px;
+  position: relative;
+  top: 30px;
+  color: #ccc;
+  font-size: 3em;
+}
+
+.footer_style{
+  margin:0;
+  text-align: right;
+  font-size: 1.2em;
+  font-style: italic;
+}
+
+.welcome_section_title{
+  margin-bottom:2px;
+  font-size:2.5em;
+}
+
+.content_table {
+    font-size:1.2em;
+    width:100%;
+    max-width:500px;
+}
+      
+.content_row{ border-bottom: 1pt solid black;}
+
+@media only screen and (max-width: 1000px) {
+    .welcome_section_title{
+      font-size:2em !important;
+    }
+  
+    .year_text{
+      font-size: 4em !important;
+    }
+    
+    .quotation{
+      font-size: 20px;
+    }
+    
+    .footer_style{
+      font-size: 0.9em;
+    }
+}
+
+.year_text{
+  border-left: 2px solid black;
+  font-size: 5em;
+  padding:10px;
+}
+
+.decade_text{
+  border-right: 2px solid black;
+  font-size: 4em;
+  padding-right:10px;
+  text-align:right;
+}
+
+.small_margin{
+  margin-top:0;
+  margin-bottom:0;
+}
+
+.welcome_line_style{
+  margin-top:0;
+  margin-bottom:10px;
+  border-bottom:2px solid black;
+}
+
+#scatterdiv {margin-left: 20px;}
+
+
+/* ------ABOUT THE DATA PAGE  -------*/
+.collapsible_block {
+  background-color: #0275d8;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  outline: none;
+  font-size: 18px;
+  border:1px solid #ffffff;
+}
+
+.active_block, .collapsible_block:hover {
+  background-color: #015dac;
+}
+
+.content_block {
+  padding: 10px 18px;
+  display: none;
+  overflow: hidden;
+  background-color: #f1f1f1;
+}
+
+.code_block{
+	background-color: #def2ff;
+	padding:10px;
+	margin:20px;
+	border:1px solid #919191;
+}

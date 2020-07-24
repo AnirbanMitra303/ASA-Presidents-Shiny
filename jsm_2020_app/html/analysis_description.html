@@ -1,0 +1,171 @@
+We include the following descriptions to be transparent about the methods used to create the visualizations in this application. If you have any questions, contact <a href="mailto:brandon@brandonkopp.com">brandon@brandonkopp.com</a>.
+<br><br>
+<button type="button" class="collapsible_block">Word Frequencies</button>
+<div class="content_block">
+  <p>Word frequency matrices used to build frequency plots and wordclouds are created using the <code>tm</code> package in R. To normalize the text, punctuation, numbers, standard stopwords, and a custom list of stopwords are all removed and all text is converted to lowercase. Custom stopwords include things like 'statisical', 'statistics','data', etc.</p>
+
+  <p>This code is run in the app itself and is probably the greatest performance bottleneck.</p>
+
+  <p>Code for creating creating a term-document matrix using the <code>tm</code> package.
+
+		<pre class="code_block">
+docs <- VCorpus(VectorSource(text$text)) %>%
+    tm_map(removePunctuation) %>%
+    tm_map(removeNumbers) %>%
+    tm_map(tolower)  %>%
+    tm_map(removeWords, stopwords("english")) %>%
+    tm_map(removeWords, stop_words) %>%
+    tm_map(stripWhitespace) %>%
+    tm_map(PlainTextDocument)
+  
+tdm <- TermDocumentMatrix(docs) %>%
+    as.matrix()
+		</pre>
+
+<p><b>For More Information:</b> <a href="https://cran.r-project.org/web/packages/tm/index.html" target="_blank" rel="nofollow"><code>tm</code> CRAN page</a></p>
+
+</div>
+<button type="button" class="collapsible_block">Readibility Statistics</button>
+<div class="content_block">
+  <p>Readibility statistics were calculated using the <code>koRpus</code> package in R. The <code>koRpus</code> package contains functions for computing a number of statistics. An assortment of statistics was chosen for their common usage and/or ease of understanding.</p>
+
+  <p>The values used in the app were pre-computed and stored in a table in order to speed up the app.</p>
+
+  <p>The following code was run for each document by looping through each ASA President speech.</p> 
+
+  		<pre class="code_block">
+set.kRp.env(TT.cmd="~/path/to/tagger/treetagger/cmd/tree-tagger-english", lang="en")
+write.table(df[i,text], "text.txt") #Output text variable to text document
+tagged <- treetag("text.txt",lang = "en")
+
+number_of_sentences <- tagged@desc$sentences
+average_sentence_length <- tagged@desc$avg.sentc.length
+average_word_length <- tagged@desc$avg.word.length
+ttr <- TTR(tagged)
+type_token_ratio <- ttr@TTR
+number_of_words <- ttr@tt$num.tokens
+number_of_unique_words <- ttr@tt$num.types
+fk <- flesch.kincaid(tagged)
+flesh_kincaid_age_score <- fk@Flesch.Kincaid$age
+flesh_kincaid_grade_score <- fk@Flesch.Kincaid$grade
+		</pre>
+
+<p><b>For More Information:</b> <a href="https://cran.r-project.org/web/packages/koRpus/index.html" target="_blank" rel="nofollow"><code>koRpus</code> CRAN page</a></p>
+
+</div>
+<button type="button" class="collapsible_block">Sentiment Analysis</button>
+<div class="content_block">
+  <p>Sentiment analysis calculations were calculated using the <code>qdap</code> package in R.</p>
+
+  <p>For each document, overall sentiment was calculated and the positively- and negatively-valenced words were extracted and stored as lists. These values used in the app were pre-computed and stored in a table in order to speed up the app. For sentiment analysis by sentence (as show on the speech page), polarity was calculated separately for each sentence in the app itself. The <code>data.table</code> package was used for this in an attempt to improve performance.</p>
+
+  <p>The following code was run for all ASA President speeches.</p> 
+
+  		<pre class="code_block">
+polarity_calculations <- polarity(df$speechtext)$all
+		</pre>
+
+  <p><b>For More Information:</b> <a href="https://cran.r-project.org/web/packages/qdap/index.html" target="_blank" rel="nofollow"><code>qdap</code> CRAN page</a></p>
+</div>
+<button type="button" class="collapsible_block">Topic Modeling</button>
+<div class="content_block">
+  <p>Topic modeling was done using the <code>tidytext</code> and <code>topicmodels</code> packages in R. Initially, we attempted to form topics from the full documents (removing only the stopwords), but coherent topics did not form. So instead, we generated a list of nearly 200 words believed to be related to topics of interest (e.g., surveys, economics, ASA administration, etc.) by looking at many of the speeches to discern their general topics. This proved to be more successful in creating coherent topics. Frequency counts of unigrams and bigrams by document were fed into the <code>LDA()</code> function from the <code>topicmodels</code> package. The word-topic loadings (i.e., the "beta" matrix) and the document-topic loadings (i.e., the "gamma" matrix) were extracted and stored for later plotting.</p>
+
+  <p>Topic loadings for each document were pre-computed and stored in a table in order to speed up the app.</p>
+
+  		<pre class="code_block">
+dtm <- doc_words %>% cast_dtm(id, word, n)
+num_topics <- 9
+txt <- LDA(dtm, k = num_topics, method = "Gibbs", control = list(seed = 1234))
+
+topics <- tidy(txt, matrix = "beta")
+
+top_terms <- topics %>%
+  group_by(topic) %>%
+  top_n(10, beta) %>%
+  ungroup() %>%
+  arrange(topic, -beta)
+
+documents <- tidy(txt, matrix = "gamma") 
+  
+doc_wide <- tidy(txt, matrix = "gamma") %>%
+  mutate(topic = paste0("topic_", topic)) %>%
+  tidyr::spread(topic, gamma)
+		</pre>
+
+
+  <p><b>For More Information:</b> <a href="https://cran.r-project.org/web/packages/tidytext/index.html" target="_blank" rel="nofollow"><code>tidytext</code> CRAN page</a>, <a href="https://cran.r-project.org/web/packages/topicmodels/index.html" target="_blank" rel="nofollow"><code>topicmodels</code> CRAN page</a>, and <a href="https://www.tidytextmining.com/topicmodeling.html" target="_blank" rel="nofollow">tidytextmining Chapter 6 Text Mining</a></p>
+</div>
+<button type="button" class="collapsible_block">Named Entity Recognition</button>
+<div class="content_block">
+  <p>Named Entity Recognition/Extraction was done using the <code>spaCy</code> package in Python. This was done in Python because <code>spaCy</code> makes entity extraction easy. <code>spaCy</code>'s pre-trained model does deliver some frustrating results, but given the simplicity of its use, it is amazing. Specifically, entities related to people/person names ("PERSON"); nationalities, religions, or political groups ("NORP"); and companies, agencies, and institutions ("ORG") were extracted. There are also options for places, laws, products, numeric quantites, and others, but those did not seem as though they would be fruitful or interesting for ASA presidential speeches.</p>
+
+  <p>The values used in the app were pre-computed and stored in a table in order to speed up the app and because we didn't want to figure out how to implement this in the app.</p>
+
+  <p>The following code was run for each document by looping through each ASA President speech.</p> 
+
+  		<pre class="code_block">
+nlp = spacy.load("en")
+
+doc = nlp(df['speechtext'][i])
+
+people = []
+for ent in list(doc.ents):
+    if ent.label_ == "PERSON":
+        if re.findall(" ", ent.text):
+            people.append(ent.text)
+
+entities=[]
+for ent in list(doc.ents):
+    if ent.label_ in ["ORG","NORP"]:
+        entities.append(re.sub("^a |^an |^the ","", ent.text, flags=re.IGNORECASE))
+		</pre>
+
+
+  <p><b>For More Information:</b> <a href="https://spacy.io/usage/linguistic-features#named-entities" target="_blank" rel="nofollow"><code>spaCy</code> named entity recognition documentation page</a> and <a href="https://spacy.io/api/annotation#named-entities" target="_blank" rel="nofollow"><code>spaCy</code> named entity recognition annotations page</a></p>
+</div>
+<button type="button" class="collapsible_block">Never-Before-Seen Words</button>
+<div class="content_block">
+  <p>The never-before-seen words were compiled using the <code>sklearn</code> package in Python. These were determined by looping through the documents in chronological order and creating an ever-growing vocabulary across years. For each year, set operations were used to compare the bag of unique words from that year to the cumulative bag of words. Any words that were not currently in the cumulative bag of words were considered "never-before-seen". Those words were then added to the cumultative bag and the iteration continued. </p>
+
+   <p>The word sets were pre-computed and stored as lists in a table for use in the app.</p>
+
+   <p>The following code was run for each document by looping through each ASA President speech.</p> 
+
+  		<pre class="code_block">
+big_bag = set()
+vectorizer = CountVectorizer(ngram_range=(1,1), stop_words=stopwords.words("english"),
+	token_pattern='(?u)\\b[A-z][A-z]+\\b')
+
+vectorizer.fit([df['speechtext'][1]])
+big_bag = big_bag.union(set(vectorizer.vocabulary_.keys()))
+
+for i in range(1,df.shape[0]+1):
+    if i != 1:
+        vectorizer.fit([df['speechtext'][i]])
+        speechwords = set(vectorizer.vocabulary_.keys())
+        new_words = speechwords - big_bag
+        df.at[i,'new_words'] = '|'.join(list(new_words))
+        big_bag = big_bag.union(speechwords)
+		</pre>
+
+  <p><b>For More Information:</b> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html" target="_blank" rel="nofollow"><code>scikit-learn CountVectorizer</code> documentation page</a></p>
+</div>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible_block");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active_block");
+    var content_block = this.nextElementSibling;
+    if (content_block.style.display === "block") {
+      content_block.style.display = "none";
+    } else {
+      content_block.style.display = "block";
+    }
+  });
+}
+</script>

@@ -1,0 +1,22 @@
+
+
+<ul>
+    <li><b>Affiliation</b> - A general category describing the nature of the ASA president's employment at the time they were president. Values include Academia, Government, Industry, and Unknown.</li>
+    <li><b>Average Sentence Length</b> - The average number of words in sentences within a document (speech).</li>
+    <li><b>Average Word Length</b> - The average number of characters in words within a document (speech).</li>
+    <li><b>Flesch-Kincaid Age Score</b>- This is a transformation that translates the <code>Flesh-Kincaid Grade Score</code> into the age, in years, that one would need to be to fully understand the writing. For more information see the <a href="https://cran.r-project.org/web/packages/koRpus/koRpus.pdf#page=23" target="_blank" rel="nofollow">koRpus documentation.</a></li>
+    <li><b>Flesch-Kincaid Grade Score</b> - A measure of the readability of a document (speech) that presents a score in the form of a U.S. grade level that one would need to be at to fully understand the writing. The score is calculated using <code>Average Sentence Length</code> and the average number of syllables per word. For more information see the <a href="https://cran.r-project.org/web/packages/koRpus/koRpus.pdf#page=23" target="_blank" rel="nofollow">koRpus documentation.</a></li>  
+    <li><b>Length Rank</b> - The rank order of the speech in terms of <code>Number of Words</code> with lower numbers meaning longer speeches and higher numbers meaning shorter speeches.</li>
+    <li><b>Named Entity Recognition</b> - The use of a model to identify chunks of text that are important in some way. In the case of this app, we used the <a href="https://spacy.io/" target="_blank" rel="nofollow">spaCy library</a> in Python to extract names and groups.</li>
+    <li><b>Number of Words</b> - The total number of running word forms (tokens) in a document (speech).</li>
+    <li><b>Number of Unique Words</b> - The total number of distinct word forms (types) in a document (speech).</li>
+    <li><b>Sentiment</b> - Approximate polarity (extremity of positivity or negativity) expressed in a document (speech or sentence) as determined by assigning words a score from a sentiment dictionary and aggregating those scores accounting for negations. For more information see the <a href="https://cran.r-project.org/web/packages/qdap/qdap.pdf#page=232" target="_blank" rel="nofollow">qdap documentation for polarity score.</a></li>
+    <li><b>Topic Models</b> - For more information see the <a href="https://cran.r-project.org/web/packages/topicmodels/topicmodels.pdf#page=5" target="_blank" rel="nofollow">topicmodels documentation for LDA.</a></li>
+        <ul>
+        <li><b>Word Loadings (Beta)</b> - Logarithmized parameters of the word distribution for each topic.</li>
+        <li><b>Topic Loadings (Gamma)</b> -  Parameters of the posterior topic distribution for each document. Documents can have non-zero loadings for multiple topics. The Gamma values for a document sum to 1.</li>
+        <li><b>Main Topic</b> - The ID of the topic with the highest <code>Topic Loading (Gamma)</code> for a document.</li>
+        </ul>
+    </li>
+    <li><b>Type-Token Ratio (TTR)</b> - The number of distinct words (types) divided by the total number of words (tokens) in a document. This is often used as a measure of complexity with higher values meaning one would have to parse and understand a greater proportion of unique words. For more information see the <a href="https://cran.r-project.org/web/packages/koRpus/koRpus.pdf#page=111" target="_blank" rel="nofollow">koRpus documentation for TTR.</a></li>
+</ul>

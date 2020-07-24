@@ -1,0 +1,21 @@
+<h3>Where the Data Came From</h3>
+
+<p>It was decided in April 1908 that the ASA President would give an address at the annual meeting. Subsequently, the first annual ASA President’s address was given by then ASA President Carroll D. Wright in December 1908. Furthermore, most of the speeches were published in the Journal of the American Statistical Association (<a href="https://www.tandfonline.com/toc/uasa20/current" target="_blank" rel="nofollow">https://www.tandfonline.com/toc/uasa20/current</a>).</p>
+
+<p>Most of the published speeches were downloaded and provided by Eric Sampson of the ASA. Wendy tracked down and obtained some that were missing from the original download. There were just a few presidential addresses that appeared to be unpublished and unavailable.</p>
+
+<h3>Data Cleaning</h3>
+
+<p>Data cleaning and wrangling is always challenging and time-consuming. It was no different with this data set. All speeches were obtained in pdf format, and one of the first challenges was to extract the text from the files. Early speeches were actually images of the original articles, and later ones were created from text. Thus, the text in early speeches had to be extracted via OCR (optical character recognition), which can result in errors. </p>
+
+<p>We tried using Adobe Acrobat Pro for all text extraction, but the results were not good. Besides some recognition errors, some of the extracted text had no spaces so it was just one long word.  We turned to the MATLAB Text Analysis Toolbox to extract the text. This worked well regardless of the pdf file type. MATLAB was used to extract the text and to write it to a text file.</p>
+
+<p>As one might expect, the text was still rather messy. Here are the main issues we encountered. Keep in mind that the text files were cleaned manually.</p>
+
+<ul>
+	<li>The usual –ascii text special characters were removed. For example, @, #, ^, &, -, +, …</li>
+	<li>Because the articles were professionally typeset, there were numerous instances of hyphens splitting words across two lines. Combining this with removing hyphens as special characters resulted in words with spaces in the middle, e.g., statistics. We went through each text file and corrected these by hand. However, we know for a fact that many were missed. </li>
+	<li>There was no consistent format to the articles so we could not easily delete reference sections, abstracts, keywords, etc. </li>
+	<li>There were also some strange character encodings, which caused some issues with importing the text into this Shiny app and with other analyses. </li>
+	<li>Articles had different structures, such as metadata, headers (short title, journal name, and author name), footers (footnotes, article month), page numbers, volume and issue, figure captions, equations, references in the text stream, and tables with text entries. These structures and formats changed with over 100 years of speeches. </li>
+</ul>
