@@ -1,4 +1,4 @@
-### ASA Presidential Speech App
+# ASA Presidential Speech App
 
 This respository contains code and data for an R Shiny app that was presented during the 2020 ASA Presidential Address delivered by Wendy Martinez. This app allows users to explore 106 ASA presidential addresses between 1908 and 2019. The app allows one to explore word frequencies, topic models, sentiment analysis, and named entity recognition in those speeches.
 
