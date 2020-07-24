@@ -1,10 +1,10 @@
-# ASA Presidential Speech App
+# Yesterday Once More: ASA Presidential Address Exploration App
 
-This respository contains code and data for an R Shiny app that was presented during the 2020 ASA Presidential Address delivered by Wendy Martinez. This app allows users to explore 106 ASA presidential addresses between 1908 and 2019. The app allows one to explore word frequencies, topic models, sentiment analysis, and named entity recognition in those speeches.
+This respository contains code and data for an R Shiny app that was presented during the 2020 ASA Presidential Address delivered by Wendy Martinez. This app allows users to explore 106 ASA presidential addresses delivered between 1908 and 2019. This includes word frequencies, topic models, sentiment analysis, and named entity recognition.
 
 You can visit the app at [https://osmrbls.shinyapps.io/jsm_2020/](https://osmrbls.shinyapps.io/jsm_2020/)
 
-<img src="./screenshot.png" width="600px">
+<img src="./screenshot.png" width="750px">
 
 ## Data
 
